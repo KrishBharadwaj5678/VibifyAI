@@ -75,6 +75,14 @@ audio.addEventListener("timeupdate", () => {
   totalTimeEl.innerText = formatTime(audio.duration);
 });
 
+// Seek Audio
+progressContainer.addEventListener("click", (e) => {
+  const width = progressContainer.clientWidth;
+  const clickX = e.offsetX;
+  const duration = audio.duration;
+  audio.currentTime = (clickX / width) * duration;
+});
+
 // Volume Controls
 volumeBtn.addEventListener("click", () => {
   volumeControls.classList.toggle("hidden");
