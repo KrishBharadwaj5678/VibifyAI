@@ -10,15 +10,91 @@ import {
   toggleBoundingBoxBtn,
   detectIcon,
   audio,
+  playPauseBtn,
+  playPauseIcon,
+  progressContainer,
+  progress,
+  currentTimeEl,
+  totalTimeEl,
+  volumeBtn,
+  volumeControls,
+  volumeSlider,
+  volumeProgress,
 } from "./js/elements.js";
 import { clearRectangle } from "./js/clearRectangle.js";
 import { getDominantEmotion } from "./js/getDominantEmotion.js";
+import { formatTime } from "./js/formatTime.js";
 
 // Emotion history to determine stable emotion
 let emotionHistory = [];
 let HISTORY_LIMIT = 5;
 let currentStableEmotion = "neutral";
 let lastPlayedEmotion = null;
+let currentEmotion = "neutral";
+
+// Default Audio
+audio.src = songs.neutral;
+
+// Play Icon
+function setPlayIcon() {
+  playPauseIcon.setAttribute("d", "M18 12L0 24V0");
+}
+
+// Pause Icon
+function setPauseIcon() {
+  playPauseIcon.setAttribute("d", "M0 0h6v24H0zM12 0h6v24h-6z");
+}
+
+// Toggle Play/Pause
+function togglePlayPause() {
+  if (audio.paused) {
+    audio.play();
+    setPauseIcon();
+  } else {
+    audio.pause();
+    setPlayIcon();
+  }
+}
+
+// Button Click
+playPauseBtn.addEventListener("click", togglePlayPause);
+
+// When song ends, reset play icon
+audio.addEventListener("ended", () => {
+  setPlayIcon();
+});
+
+// Update progress bar and time display
+audio.addEventListener("timeupdate", () => {
+  // Progress %
+  const percent = (audio.currentTime / audio.duration) * 100;
+  progress.style.width = percent + "%";
+
+  // Time
+  currentTimeEl.innerText = formatTime(audio.currentTime);
+  totalTimeEl.innerText = formatTime(audio.duration);
+});
+
+// Volume Controls
+volumeBtn.addEventListener("click", () => {
+  volumeControls.classList.toggle("hidden");
+});
+
+// Change Volume
+volumeSlider.addEventListener("click", (e) => {
+  const height = volumeSlider.clientHeight;
+  const clickY = e.offsetY;
+
+  const volume = 1 - clickY / height;
+  audio.volume = volume;
+  volumeProgress.style.height = volume * 100 + "%";
+});
+
+// Default Volume UI
+volumeProgress.style.height = "100%";
+
+// Initial play audio
+audio.play();
 
 // Constants for timeline
 let emotionTimeline = [];
@@ -27,10 +103,6 @@ let timeCounter = 0;
 
 // Bounding box toggle state
 let showBoundingBox = false;
-
-// Audio element for music playback
-audio.src = "./music/neutral.mp3";
-audio.play();
 
 // Initialize Chart.js
 export let moodChart = new Chart(ctx, {
