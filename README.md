@@ -2,6 +2,8 @@
 
 An AI-powered emotion detection web app that analyzes facial expressions through your webcam and dynamically adapts music based on your mood.
 
+![VibifyAIDemo](https://github.com/KrishBharadwaj5678/VibifyAI/raw/main/VibifyAIDemo.png)
+
 ## 🌟 Features
 
 | Feature                        | Description                                |
