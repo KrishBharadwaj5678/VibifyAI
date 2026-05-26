@@ -1,3 +1,5 @@
+[English](README.md) | [Português](README.pt.md) | [日本語](README.ja.md) | [Русский](README.ru.md)
+
 # 🎧 Vibify AI 
 
 An AI-powered emotion detection web app that analyzes facial expressions through your webcam and dynamically adapts music based on your mood.
