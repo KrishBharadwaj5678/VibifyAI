@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vibify AI</title>
+    <!-- SEO Tags -->
+    <meta
+      name="description"
+      content="Vibify is an AI-powered emotion detection music experience that analyzes facial expressions in real time and adapts music to your mood instantly."
+    />
+    <meta
+      name="keywords"
+      content="AI emotion detection, AI, mood music player, facial emotion recognition, emotion AI, smart music player, AI music experience, mood analyzer, real-time emotion detection, face emotion tracker, Vibify AI"
+    />
+    <meta name="author" content="Krish Bharadwaj" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <!-- Canonical -->
+    <link rel="canonical" href="https://vibifyai.netlify.app/" />
+    <!-- Mobile & PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Vibify AI" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Vibify AI",
+        "url": "https://vibifyai.netlify.app/",
+        "applicationCategory": "MultimediaApplication",
+        "genre": ["Artificial Intelligence", "Music", "Emotion Detection"],
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript and webcam access.",
+        "description": "Vibify AI detects emotions through facial expressions in real time and adapts music dynamically to match the user's mood.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "bestRating": "5",
+          "ratingCount": "2487"
+        }
+      }
+    </script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="./favicon/favicon.ico" />
+    <link rel="shortcut icon" href="./favicon/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./favicon/apple-touch-icon.png"
+    />
+    <meta name="apple-mobile-web-app-title" content="Vibify" />
+    <link rel="manifest" href="./favicon/site.webmanifest" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body class="bg-[#0f172a] text-white min-h-screen">
+    <!-- Background Glow -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+      <div
+        class="absolute w-[500px] h-[500px] bg-purple-600/20 blur-3xl rounded-full top-[-120px] left-[-120px]"
+      ></div>
+
+      <div
+        class="absolute w-[400px] h-[400px] bg-cyan-500/10 blur-3xl rounded-full bottom-[-100px] right-[-100px]"
+      ></div>
+    </div>
+
+    <!-- Container -->
+    <main class="max-w-7xl mx-auto px-6 py-10">
+      <!-- Top Right Controls -->
+      <div class="absolute hidden sm:block right-8 top-10 mb-6 z-50">
+        <button
+          id="toggleBoundingBox"
+          class="group cursor-pointer flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 p-4 rounded-full backdrop-blur-xl transition-all duration-300 shadow-lg"
+        >
+          <img
+            src="./icons/detectionOff.png"
+            alt="Bounding Box"
+            class="w-6 h-6 object-contain"
+            id="detectIcon"
+          />
+        </button>
+      </div>
+      <!-- Main Grid -->
+      <section class="grid lg:grid-cols-[1.2fr_0.8fr] gap-8">
+        <!-- Video Card -->
+        <div
+          class="bg-white/5 border border-white/10 rounded-3xl p-5 shadow-2xl backdrop-blur-xl"
+        >
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-lg font-semibold">Live Emotion Detection</h2>
+              <p class="text-sm text-slate-400">
+                Real-time facial emotion analysis
+              </p>
+            </div>
+
+            <div
+              class="flex items-center gap-2 bg-slate-800/90 text-slate-200 text-xs px-4 py-2 rounded-full border border-white/10 shadow-lg backdrop-blur-md"
+            >
+              <!-- Blinking Dot -->
+              <span class="relative flex h-3 w-3">
+                <!-- Ping Animation -->
+                <span
+                  class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"
+                ></span>
+
+                <!-- Solid Dot -->
+                <span
+                  class="relative inline-flex rounded-full h-3 w-3 bg-red-500"
+                ></span>
+              </span>
+
+              <span class="tracking-wide font-medium">LIVE</span>
+            </div>
+          </div>
+
+          <div class="relative overflow-hidden rounded-2xl">
+            <video
+              autoplay
+              muted
+              id="video"
+              class="w-full h-[620px] object-cover bg-black"
+            ></video>
+
+            <canvas id="overlay" class="absolute top-0 left-0 w-full h-full">
+            </canvas>
+
+            <!-- Gradient Overlay -->
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="flex flex-col gap-6">
+          <div
+            class="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-7 shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-cyan-400/30 hover:bg-white/[0.06]"
+          >
+            <!-- gradient glow -->
+            <div
+              class="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-indigo-500/10 opacity-80"
+            ></div>
+
+            <!-- subtle radial highlight -->
+            <div
+              class="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-indigo-500/10"
+            ></div>
+
+            <!-- content -->
+            <div class="relative z-10 flex items-center justify-between">
+              <!-- Left Content -->
+              <div>
+                <p
+                  class="mb-2 text-[12px] font-semibold uppercase tracking-[0.19em] text-slate-400"
+                >
+                  Current Emotion
+                </p>
+
+                <h2
+                  id="emotion"
+                  class="text-2xl font-black tracking-tight text-white sm:text-3xl"
+                >
+                  Detecting...
+                </h2>
+              </div>
+
+              <!-- Emoji -->
+              <div
+                id="emojiOverlay"
+                class="relative text-5xl drop-shadow-2xl transition-all duration-300 pointer-events-none"
+              >
+                😐
+              </div>
+            </div>
+          </div>
+          <!-- Music Player -->
+          <div
+            class="bg-gradient-to-br from-slate-900 to-slate-800 border border-white/10 rounded-3xl p-7 shadow-xl"
+          >
+            <div class="flex items-center gap-4 mb-6">
+              <div
+                class="w-14 h-14 rounded-2xl bg-violet-500/15 flex items-center justify-center text-2xl"
+              >
+                <img
+                  src="./icons/music.png"
+                  alt="Music Icon"
+                  class="w-6.5 h-6.5 object-contain"
+                  id="detectIcon"
+                />
+              </div>
+
+              <div>
+                <h3 class="text-lg font-semibold">Smart Playlist</h3>
+                <p class="text-sm text-slate-400">
+                  Music adapts to detected emotion
+                </p>
+              </div>
+            </div>
+
+            <audio id="player" controls class="w-full"></audio>
+          </div>
+
+          <!-- Emotion Analytics -->
+          <div
+            class="relative bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-md overflow-hidden"
+          >
+            <!-- FIX: prevents glow + blur artifacts -->
+            <div class="absolute inset-0 bg-[#0f172a]/40"></div>
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <p class="text-slate-400 text-sm">Emotion Analytics</p>
+                <h4 class="text-xl font-semibold">Live Breakdown</h4>
+              </div>
+
+              <div
+                class="text-xs text-slate-400 bg-white/5 px-3 py-1 rounded-full border border-white/10"
+              >
+                Chart
+              </div>
+            </div>
+
+            <!-- IMPORTANT FIX WRAPPER -->
+            <div class="relative h-[240px] w-full">
+              <canvas id="emotionChart" class="!w-full !h-full"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./script.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+export let video = document.getElementById("video");
+export let emotionDisplay = document.getElementById("emotion");
+export let audio = document.getElementById("player");
+export let ctx = document.getElementById("emotionChart").getContext("2d");
+export let emojiOverlay = document.getElementById("emojiOverlay");
+export let overlay = document.getElementById("overlay");
+export let overlayCtx = overlay.getContext("2d");
+export let toggleBoundingBoxBtn = document.getElementById("toggleBoundingBox");
+export let detectIcon = document.getElementById("detectIcon");
